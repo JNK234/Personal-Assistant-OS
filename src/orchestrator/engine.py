@@ -3,7 +3,7 @@ Voice Orchestrator Engine - Main coordinator using Google ADK
 """
 
 import os
-from typing import AsyncGenerator, Optional
+from typing import AsyncGenerator, Optional, List, Dict
 from google.adk.agents import LlmAgent
 
 from .agents import create_email_agent, create_task_agent, create_general_agent
@@ -17,14 +17,16 @@ class VoiceOrchestrator:
     requests to specialized sub-agents based on user intent.
     """
 
-    def __init__(self, session_id: Optional[str] = None):
+    def __init__(self, session_id: Optional[str] = None, history: Optional[List[Dict]] = None):
         """
         Initialize the voice orchestrator.
 
         Args:
             session_id: Optional session ID for conversation persistence
+            history: Optional conversation history to restore context
         """
         self.session_id = session_id
+        self._initial_history = history or []
 
         # Create specialized agents
         self.email_agent = create_email_agent()
@@ -100,6 +102,10 @@ Always maintain context across the conversation and remember what the user has s
 
             if not hasattr(self, "_runner"):
                 self._runner = AgentRunner(self.coordinator)
+
+                # Load initial history if available
+                if self._initial_history:
+                    self._runner.conversation_history = self._initial_history.copy()
 
             # Run the coordinator and stream results
             async for chunk in self._runner.run(message, stream=stream):

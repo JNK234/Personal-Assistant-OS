@@ -91,7 +91,7 @@ async def load_session(session_id: str) -> list[dict]:
     return data["messages"]
 
 
-def list_sessions() -> list[dict]:
+async def list_sessions() -> list[dict]:
     """
     List all available sessions with metadata.
 
@@ -106,8 +106,8 @@ def list_sessions() -> list[dict]:
 
     for session_file in SESSIONS_DIR.glob("*.json"):
         try:
-            with open(session_file, 'r') as f:
-                data = json.load(f)
+            async with aiofiles.open(session_file, 'r') as f:
+                data = json.loads(await f.read())
 
             sessions.append({
                 "session_id": data["session_id"],

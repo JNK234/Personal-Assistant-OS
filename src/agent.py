@@ -9,7 +9,8 @@ from .config import (
     MODEL_NAME,
     ALLOWED_TOOLS,
     SYSTEM_PROMPT,
-    PERMISSION_MODE
+    PERMISSION_MODE,
+    ANTHROPIC_API_KEY
 )
 
 
@@ -28,7 +29,18 @@ async def chat(
 
     Yields:
         Text chunks from Claude's response, including tool usage information
+
+    Raises:
+        ValueError: If ANTHROPIC_API_KEY is not configured
     """
+    # Check for API key
+    if not ANTHROPIC_API_KEY:
+        raise ValueError(
+            "ANTHROPIC_API_KEY not found in environment. "
+            "Please create a .env file with your API key. "
+            "See .env.example for reference."
+        )
+
     # Configure agent options
     options = ClaudeAgentOptions(
         model=MODEL_NAME,

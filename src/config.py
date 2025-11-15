@@ -8,14 +8,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Anthropic API Configuration
+# Anthropic API Configuration (optional - only needed for Claude-based chatbot)
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-if not ANTHROPIC_API_KEY:
-    raise ValueError(
-        "ANTHROPIC_API_KEY not found in environment. "
-        "Please create a .env file with your API key. "
-        "See .env.example for reference."
-    )
+# Note: ANTHROPIC_API_KEY is optional. It's only required when using the Claude chatbot
+# (src/cli.py). The voice assistant (src/voice_cli.py) uses Google API instead.
 
 # Model Configuration
 MODEL_NAME = "claude-sonnet-4-20250514"

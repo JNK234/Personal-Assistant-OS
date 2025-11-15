@@ -131,15 +131,21 @@ Type your message or command to begin!
                 console.print("[red]Usage: /resume <session_id>[/red]")
                 return
 
-            session_data = await load_session(args)
-            if session_data:
+            try:
+                session_data = await load_session(args)
                 self.session_id = args
-                self.orchestrator = VoiceOrchestrator(session_id=self.session_id)
+
+                # Create orchestrator with loaded history for context
+                self.orchestrator = VoiceOrchestrator(
+                    session_id=self.session_id,
+                    history=session_data  # Pass history for context retention
+                )
+
                 console.print(f"[green]Resumed session: {args}[/green]")
                 console.print(
-                    f"[dim]Loaded {len(session_data['messages'])} messages[/dim]"
+                    f"[dim]Loaded {len(session_data)} messages[/dim]"
                 )
-            else:
+            except FileNotFoundError:
                 console.print(f"[red]Session not found: {args}[/red]")
 
         elif cmd == "/sessions":
@@ -151,7 +157,7 @@ Type your message or command to begin!
                     console.print(
                         f"  • {session['session_id']} "
                         f"({info['message_count']} messages, "
-                        f"last: {info['last_activity']})"
+                        f"last: {info['last_message_at']})"
                     )
                 console.print()
             else:
