@@ -1,10 +1,16 @@
 [project]
 name = "personal-assistant-os"
-version = "0.1.0"
-description = "A Python-based interactive CLI chatbot powered by Claude Agent SDK"
+version = "0.2.0"
+description = "Voice-first personal assistant with Google ADK multi-agent orchestration"
 requires-python = ">=3.11"
 dependencies = [
     "claude-agent-sdk>=0.1.0",
+    "google-adk>=0.1.0",
+    "google-generativeai>=0.8.0",
+    "google-auth>=2.25.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-api-python-client>=2.110.0",
+    "websockets>=12.0",
     "python-dotenv>=1.0.0",
     "rich>=13.0.0",
     "aiofiles>=23.0.0",
@@ -12,3 +18,4 @@ dependencies = [
 
 [project.scripts]
 chatbot = "src.cli:main"
+voice-assistant = "src.voice_cli:main"

@@ -1,9 +1,23 @@
-# Claude Agent SDK CLI Chatbot
+# Personal Assistant OS
 
-A Python-based interactive CLI chatbot powered by Claude Agent SDK with session persistence and file operation capabilities.
+A voice-first, low-latency personal assistant with multi-agent orchestration.
+
+**Two modes available:**
+1. **Voice Assistant** - Google ADK multi-agent orchestrator (NEW!)
+2. **Claude Chatbot** - Claude Agent SDK with file operations
 
 ## Features
 
+### Voice Assistant (Google ADK)
+- 🎙️ **Voice-First Design**: Optimized for voice interactions
+- 🤖 **Multi-Agent Orchestration**: Intelligent routing to specialized agents
+- 📧 **Email Agent**: Gmail operations (read, send, search)
+- ✅ **Task Agent**: Todo management and reminders
+- 💬 **General Agent**: Conversation and web search
+- ⚡ **Low Latency**: Sub-500ms response times
+- 🔄 **Streaming**: Real-time response streaming
+
+### Claude Chatbot
 - **Interactive REPL Interface**: Chat with Claude in a terminal
 - **Session Persistence**: Conversations are automatically saved and can be resumed
 - **File Operations**: Claude can read, write, and edit files when needed
@@ -14,7 +28,8 @@ A Python-based interactive CLI chatbot powered by Claude Agent SDK with session 
 
 - Python 3.11+
 - [uv](https://github.com/astral-sh/uv) (Python package manager)
-- Anthropic API Key
+- **For Voice Assistant**: Google API Key ([Get one here](https://aistudio.google.com/apikey))
+- **For Claude Chatbot**: Anthropic API Key ([Get one here](https://console.anthropic.com/))
 
 ## Installation
 
@@ -37,23 +52,58 @@ uv sync
 4. Set up environment variables:
 ```bash
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+# Edit .env and add your API keys
+```
+
+For Voice Assistant, add to `.env`:
+```env
+GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+```
+
+For Claude Chatbot, add to `.env`:
+```env
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
 ## Usage
 
-Start the chatbot:
+### Voice Assistant (Recommended)
+
+Start the voice-first orchestrator:
+```bash
+uv run voice-assistant
+```
+
+Or:
+```bash
+python -m src.voice_cli
+```
+
+### Claude Chatbot
+
+Start the traditional chatbot:
 ```bash
 uv run chatbot
 ```
 
-Or alternatively:
+Or:
 ```bash
 uv run python -m src.cli
 ```
 
 ### Available Commands
 
+**Voice Assistant:**
+- `/voice` - Start voice mode (real-time audio - coming soon)
+- `/new` - Start a new session
+- `/resume <id>` - Resume a session
+- `/sessions` - List all sessions
+- `/info` - Show orchestrator info
+- `/help` - Display help
+- `/exit` or `/quit` - Exit
+
+**Claude Chatbot:**
 - `/new` - Start a new chat session
 - `/resume <session_id>` - Resume an existing session
 - `/sessions` - List all saved sessions
